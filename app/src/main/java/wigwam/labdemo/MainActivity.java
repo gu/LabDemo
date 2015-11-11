@@ -1,5 +1,6 @@
 package wigwam.labdemo;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,23 +15,28 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import wigwam.labdemo.Connection.ConnectionService;
-import wigwam.labdemo.Connection.ConnectionService.ConnectionBinder;
-import wigwam.labdemo.DemoFragments.FragmentDemo2;
-import wigwam.labdemo.DemoFragments.FragmentDemo3;
-import wigwam.labdemo.DemoFragments.FragmentNBGrade;
+import wigwam.labdemo.connection.CommandUpdateListener;
+import wigwam.labdemo.connection.ConnectionService;
+import wigwam.labdemo.connection.ConnectionService.ConnectionBinder;
+import wigwam.labdemo.demofragments.FragmentDemo2;
+import wigwam.labdemo.demofragments.FragmentDemo3;
+import wigwam.labdemo.demofragments.FragmentNBGrade;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+                    CommandUpdateListener.onCommandUpdateListener {
 
     private static final String TAG = "MainActivity";
+
+    private Activity activity = this;
 
     public ConnectionService mService;
     boolean mBound = false;
@@ -53,13 +59,15 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set up the drawer.
+
         setContentView(R.layout.activity_main);
+
+        mTitle = getTitle();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
-
-        // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -75,6 +83,8 @@ public class MainActivity extends ActionBarActivity
         super.onStart();
         Intent intent = new Intent(this, ConnectionService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+
     }
 
     @Override
@@ -83,6 +93,15 @@ public class MainActivity extends ActionBarActivity
         if (mBound) {
             unbindService(mConnection);
             mBound = false;
+        }
+    }
+
+    @Override
+    public void commandUpdate(String s) {
+        //TODO: SEND comamnd
+        if (mService != null) {
+            String n = mService.doStuff(s);
+            Toast.makeText(this, n, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -123,6 +142,10 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    public void blah() {
+
+    }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -135,11 +158,11 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 1:
                 mTitle = getString(R.string.title_demo2);
-                fragment = new FragmentDemo2();
+//                fragment = new FragmentDemo2();
                 break;
             case 2:
                 mTitle = getString(R.string.title_demo3);
-                fragment = new FragmentDemo3();
+//                fragment = new FragmentDemo3();
                 break;
         }
         fragmentManager.beginTransaction()

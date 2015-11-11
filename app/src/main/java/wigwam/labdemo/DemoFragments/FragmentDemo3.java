@@ -1,4 +1,4 @@
-package wigwam.labdemo.DemoFragments;
+package wigwam.labdemo.demofragments;
 
 import android.app.Fragment;
 import android.os.Bundle;

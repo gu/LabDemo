@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".Connection.ConnectionService" android:enabled="true" />
+        <service android:name=".connection.ConnectionService"/>
     </application>
 
 </manifest>

@@ -1,9 +1,12 @@
-package wigwam.labdemo.DemoFragments;
+package wigwam.labdemo.demofragments;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +17,23 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import wigwam.labdemo.Connection.ConnectionService;
 import wigwam.labdemo.R;
+import wigwam.labdemo.connection.CommandUpdateListener;
+import wigwam.labdemo.connection.ConnectionService;
 
 /**
  * Created by freddy on 11/10/15.
  */
 public class FragmentNBGrade extends Fragment {
+    private static final String TAG = "FragmentNBGrade";
+
+    private Activity activity;
 
     private ListView lv;
     List<String> imgSourceList = new ArrayList<>();
@@ -46,10 +52,14 @@ public class FragmentNBGrade extends Fragment {
 
     private CheckBox cbDisplayOptions;
 
+    CommandUpdateListener.onCommandUpdateListener commandUpdateListener;
+
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container,
         Bundle savedInstanceState) {
 
+        activity = getActivity();
+        commandUpdateListener = (CommandUpdateListener.onCommandUpdateListener) activity;
 
         View view = inflator.inflate(R.layout.fragment_nb_grade, container, false);
 
@@ -82,6 +92,7 @@ public class FragmentNBGrade extends Fragment {
         setListeners();
 
         return view;
+
     }
 
     public void populateList() {
@@ -130,6 +141,8 @@ public class FragmentNBGrade extends Fragment {
             public void onClick(View v) {
                 //TODO: SEND COMMAND TO CLIENT
 
+                commandUpdateListener.commandUpdate("nb_grade_segmentation");
+
                 btnNuclei.setEnabled(true);
                 btnCytoplasm.setEnabled(true);
                 btnBackground.setEnabled(true);
@@ -141,6 +154,7 @@ public class FragmentNBGrade extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: SEND COMMAND TO CLIENT
+                commandUpdateListener.commandUpdate("nb_grade_nuclei");
             }
         });
 
@@ -148,6 +162,7 @@ public class FragmentNBGrade extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: SEND COMMAND TO CLIENT
+                commandUpdateListener.commandUpdate("nb_grade_cytoplasm");
             }
         });
 
@@ -155,6 +170,7 @@ public class FragmentNBGrade extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: SEND COMMAND TO CLIENT
+                commandUpdateListener.commandUpdate("nb_grade_background");
             }
         });
 
@@ -162,6 +178,7 @@ public class FragmentNBGrade extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: SEND COMMAND TO CLIENT
+                commandUpdateListener.commandUpdate("nb_grade_classification");
             }
         });
 
@@ -170,8 +187,10 @@ public class FragmentNBGrade extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rbKMEANS) {
                     //TODO:SEND COMMAND
+                    commandUpdateListener.commandUpdate("nb_grade_kmeans");
                 } else if (checkedId == R.id.rbFCM) {
                     //TODO: SEND COMMAND
+                    commandUpdateListener.commandUpdate("nb_grade_fcm");
                 }
             }
         });
@@ -197,6 +216,11 @@ public class FragmentNBGrade extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //TODO: do stuff
+                if (isChecked) {
+                    commandUpdateListener.commandUpdate("nb_grade_display_checked");
+                } else {
+                    commandUpdateListener.commandUpdate("nb_grade_display_unchecked");
+                }
             }
         });
 
@@ -204,8 +228,7 @@ public class FragmentNBGrade extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = imgSourceList.get(position);
-                Toast.makeText(getActivity(),
-                        ""+position + ": " + name, Toast.LENGTH_SHORT).show();
+                commandUpdateListener.commandUpdate("nb_grade_item_"+name);
             }
         });
     }
