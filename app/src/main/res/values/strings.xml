@@ -2,7 +2,7 @@
     <string name="app_name">LabDemo</string>
 
     <string name="title_NBGrade">NB Grade Control</string>
-    <string name="title_demo2">Demo 2 Control</string>
+    <string name="title_florescent_segmentation">Florescent Segmentation Control</string>
     <string name="title_demo3">Demo 3 Control</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

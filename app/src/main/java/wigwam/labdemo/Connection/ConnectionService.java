@@ -38,7 +38,6 @@ public class ConnectionService extends Service {
         return mBinder;
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();

@@ -25,8 +25,7 @@ import java.net.Socket;
 import wigwam.labdemo.connection.CommandUpdateListener;
 import wigwam.labdemo.connection.ConnectionService;
 import wigwam.labdemo.connection.ConnectionService.ConnectionBinder;
-import wigwam.labdemo.demofragments.FragmentDemo2;
-import wigwam.labdemo.demofragments.FragmentDemo3;
+import wigwam.labdemo.demofragments.FragmentFlorescentSegmentation;
 import wigwam.labdemo.demofragments.FragmentNBGrade;
 
 
@@ -72,10 +71,6 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-//        Log.d(TAG, "Attempting to start socket connection.");
-//        Thread cThread = new Thread(new ClientThread());
-//        cThread.start();
-
     }
 
     @Override
@@ -120,32 +115,6 @@ public class MainActivity extends ActionBarActivity
         }
     };
 
-    public class ClientThread implements Runnable {
-        public void run() {
-            try {
-                Log.d(TAG, "Creating socket");
-                serverSocket = new ServerSocket(1234);
-                while (true) {
-                    Socket c = serverSocket.accept();
-                    Log.d(TAG, "Connection from " + c.getInetAddress());
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
-                    String line = null;
-                    line = in.readLine();
-                    Log.d(TAG, "GOT " + line);
-                    c.close();
-                    serverSocket.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void blah() {
-
-    }
-
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         FragmentManager fragmentManager = getFragmentManager();
@@ -157,8 +126,8 @@ public class MainActivity extends ActionBarActivity
                 fragment = new FragmentNBGrade();
                 break;
             case 1:
-                mTitle = getString(R.string.title_demo2);
-//                fragment = new FragmentDemo2();
+                mTitle = getString(R.string.title_florescent_segmentation);
+                fragment = new FragmentFlorescentSegmentation();
                 break;
             case 2:
                 mTitle = getString(R.string.title_demo3);
