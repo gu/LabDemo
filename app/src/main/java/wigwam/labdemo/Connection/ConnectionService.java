@@ -9,7 +9,10 @@ import android.os.Process;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -22,6 +25,8 @@ public class ConnectionService extends Service {
 
     ServerSocket serverSocket;
     Socket client;
+    BufferedReader in;
+    PrintWriter out;
 
     public class ConnectionBinder extends Binder {
         public ConnectionService getService() {
@@ -70,13 +75,14 @@ public class ConnectionService extends Service {
                 serverSocket = new ServerSocket(1234);
                 client = serverSocket.accept();
                 Log.d(TAG, "Connection from " + client.getInetAddress());
-                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                out = new PrintWriter(client.getOutputStream(), true);
 
-                while (true) {
-                    String line = null;
-                    line = in.readLine();
-                    Log.d(TAG, "GOT " + line);
-                }
+//                while (true) {
+//                    String line = null;
+//                    line = in.readLine();
+//                    Log.d(TAG, "GOT " + line);
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -84,6 +90,13 @@ public class ConnectionService extends Service {
     }
 
     public String doStuff(String s) {
+        try {
+            if (client.isConnected()) {
+                out.println(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return s;
     }
 }

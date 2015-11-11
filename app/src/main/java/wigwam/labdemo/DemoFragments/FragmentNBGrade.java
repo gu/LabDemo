@@ -2,7 +2,6 @@ package wigwam.labdemo.demofragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,14 +17,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import wigwam.labdemo.R;
 import wigwam.labdemo.connection.CommandUpdateListener;
-import wigwam.labdemo.connection.ConnectionService;
 
 /**
  * Created by freddy on 11/10/15.
