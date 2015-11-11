@@ -1,10 +1,12 @@
-package wigwam.labdemo;
+package wigwam.labdemo.DemoFragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import wigwam.labdemo.R;
 
 /**
  * Created by freddy on 11/10/15.

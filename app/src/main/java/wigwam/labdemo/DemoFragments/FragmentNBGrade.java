@@ -1,4 +1,4 @@
-package wigwam.labdemo;
+package wigwam.labdemo.DemoFragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import wigwam.labdemo.Connection.ConnectionService;
+import wigwam.labdemo.R;
 
 /**
  * Created by freddy on 11/10/15.
@@ -46,6 +49,7 @@ public class FragmentNBGrade extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflator, ViewGroup container,
         Bundle savedInstanceState) {
+
 
         View view = inflator.inflate(R.layout.fragment_nb_grade, container, false);
 
@@ -79,8 +83,6 @@ public class FragmentNBGrade extends Fragment {
 
         return view;
     }
-
-
 
     public void populateList() {
         imgSourceList.add("D1.mat");
@@ -127,7 +129,6 @@ public class FragmentNBGrade extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: SEND COMMAND TO CLIENT
-
 
                 btnNuclei.setEnabled(true);
                 btnCytoplasm.setEnabled(true);
